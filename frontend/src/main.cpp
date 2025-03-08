@@ -1,9 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include <deque>
-#include <optional>
-#include <stack>
-#include <regex>
+#include <vector>
+
+enum class TokenType {
+    OPEN_PYTHON,
+    CLOSE_PYTHON,
+    TEXT,
+    EOF_TOKEN
+};
+
 
 
 bool valid_python_tag(const std::deque<std::string>& lines) {
@@ -16,13 +22,13 @@ bool valid_python_tag(const std::deque<std::string>& lines) {
     bool in_python_block = false;
     int line_number = 0;
     int last_python_line = 0;
+    bool valid = true;
     for (const std::string& line : lines) {
-        std::cout << line << std::endl;
         line_number++;
         if (line.find("<python>") != std::string::npos) {
             if (in_python_block) {
                 std::cerr << "ERROR: Python tags cannot exist inside other Python tags, close the tag located at line " << last_python_line << " Before using more tags\n";
-                return false;
+                valid = false;
             }
             in_python_block = true;
             last_python_line = line_number;
@@ -31,7 +37,7 @@ bool valid_python_tag(const std::deque<std::string>& lines) {
         if (line.find("</python>") != std::string::npos) {
             if (!in_python_block) {
                 std::cerr << "ERROR: Closing tag on line " << last_python_line << " does not have an opening tag.\n";
-                return false;
+                valid = false;
             }
             in_python_block = false;
             last_python_line = line_number;
@@ -40,23 +46,32 @@ bool valid_python_tag(const std::deque<std::string>& lines) {
 
     if (in_python_block) {
         std::cerr << "ERROR: Closing tag not found for line " << last_python_line << ".\n";
-        return false;
+        valid = false;
     }
 
-    return true;
+    return valid;
+}
+
+std::vector<std::vector<std::string>> parse_python_code(const std::deque<std::string>& lines) {
+    // This function will read Python code inside of Python tags
+    for (const std::string& line : lines) {
+        if (line.find("<python>") != std::string::npos) {
+            // start reading python code
+        }
+    }
 }
 
 
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cout << "Usage: " << argv[0] << " <HTML Filename>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <HTML Filename>" << std::endl;
         return EXIT_FAILURE;
     }
 
     std::ifstream file(argv[1]);
     if (!file.is_open()) {
-        std::cout << "File not found" << std::endl;
+        std::cerr << "File not found" << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -66,14 +81,13 @@ int main(int argc, char* argv[]) {
         lines.push_back(line);
     }
 
+    // check that there are valid python tags in the file
+    valid_python_tag(lines);
+    // next step is to go into the file and parse code inside the python tags
+    std::vector<std::vector<std::string>> python_code = parse_python_code(lines);
 
-    bool valid = valid_python_tag(lines);
-    if (valid) {
-        std::cout << "Success" << std::endl;
-    }
-    else {
-        std::cout << "Unclosed Python Tags" << std::endl;
-    }
+
+
     
 
     return EXIT_SUCCESS;
