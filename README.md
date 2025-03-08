@@ -1,5 +1,7 @@
 # HTMLX
 
+Current strategy: ignore everything outside of the python tags. Look for opening <python> and closing </python> tags in the html, then just run the code in between them.
+
 Primary Operators
 
 if-else-else if statements
