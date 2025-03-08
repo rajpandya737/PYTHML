@@ -2,6 +2,7 @@
 #include <fstream>
 #include <deque>
 #include <vector>
+#include <Python.h>
 
 enum class TokenType {
     OPEN_PYTHON,
@@ -54,11 +55,21 @@ bool valid_python_tag(const std::deque<std::string>& lines) {
 
 std::vector<std::vector<std::string>> parse_python_code(const std::deque<std::string>& lines) {
     // This function will read Python code inside of Python tags
-    for (const std::string& line : lines) {
-        if (line.find("<python>") != std::string::npos) {
-            // start reading python code
+    std::vector<std::vector<std::string>> python_code;
+    int line_number = 0;
+    while (line_number < lines.size()) {
+        if (lines[line_number].find("<python>") != std::string::npos) {
+            line_number++;
+            std::vector<std::string> code;
+            while (lines[line_number].find("</python>") == std::string::npos) {
+                code.push_back(lines[line_number]);
+                line_number++;
+            }
+            python_code.push_back(code);
         }
+        line_number++;
     }
+    return python_code;
 }
 
 
@@ -85,8 +96,7 @@ int main(int argc, char* argv[]) {
     valid_python_tag(lines);
     // next step is to go into the file and parse code inside the python tags
     std::vector<std::vector<std::string>> python_code = parse_python_code(lines);
-
-
+    // std::vector<std::string> executed_code = execute_python_code(python_code);
 
     
 
