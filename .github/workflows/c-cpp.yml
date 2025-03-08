@@ -31,4 +31,4 @@ jobs:
     - name: Run Tests
       run: |
         cd frontend/build
-        source run.sh
+        ./frontend ../test/cases/base.html
