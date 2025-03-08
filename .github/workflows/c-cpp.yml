@@ -13,11 +13,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    
+    - name: Install CMake
+      run: sudo apt-get update && sudo apt-get install -y cmake
+    
+    - name: Configure with CMake
+      run: |
+        mkdir -p frontend/build
+        cd frontend/build
+        cmake ..
+    
+    - name: Build with Make
+      run: |
+        cd frontend/build
+        make
+    
+    - name: Run Tests
+      run: |
+        cd frontend/build
+        source run.sh
