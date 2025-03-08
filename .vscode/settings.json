@@ -1,3 +1,6 @@
 {
-    "cmake.sourceDirectory": "C:/Users/rajpa/OneDrive/Documents/PythonProjects/HTMLX/frontend"
+    "cmake.sourceDirectory": "/home/pandyr12/workspace/HTMLX/frontend",
+    "files.associations": {
+        "ostream": "cpp"
+    }
 }
