@@ -41,12 +41,12 @@ The resultant code will be:
 ```
 
 ## Currently Supported Features
-Only basic Python code inside of the <python> tag is supported. The following features are supported. 
+Only basic Python code inside of the <python> tag is supported. 
 
-Currently the program just runs whatever is inside the <python> tag and replaces the tag with the output, but in the future, I will develop a Python interpreter that will not need to replace the tag with the output, allow for input variables, and more.
+Currently the program just runs whatever is inside the <python> tag and replaces the tag with the output, but in the future, this program will use its own basic python interpreter, won't rely on print() statements to generate html, allow for input variables, and more.
 
 ## How to use
 
-Download the latest executable from the releases page. Run the executable and pass the path to the HTMLX file as an argument. The program will then compile the HTMLX file into a normal HTML file.
+Download the latest executable from the releases page. Run the executable and pass the path to the HTMLX executable as an argument. The program will then compile the HTMLX file into a normal HTML file.
 
 
