@@ -49,4 +49,12 @@ Currently the program just runs whatever is inside the <python> tag and replaces
 
 Download the latest executable from the releases page. Run the executable and pass the path to the HTMLX executable as an argument. The program will then compile the HTMLX file into a normal HTML file.
 
+## Future Plans
+
+- [ ] Create a basic Python interpreter
+- [ ] Global syntax
+- [ ] Allow for input variables
+- [ ] Render HTMLX files in Python using a custom library
+- [ ] Better code structure and organization
+
 
