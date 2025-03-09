@@ -3,6 +3,7 @@
 #include <deque>
 #include <vector>
 #include <Python.h>
+#include <cctype>
 
 enum class TokenType {
     OPEN_PYTHON,
@@ -115,7 +116,6 @@ std::deque<std::string> embed_python_code(std::deque<std::string> lines, const s
     bool in_python_block = false;
     std::deque<std::string> new_lines;
     int executed_code_index = 0;
-    std::cout << executed_code.size() << std::endl;
     for (const std::string& line : lines) {
         if (line.find("<python>") != std::string::npos) {
             in_python_block = true;
@@ -139,6 +139,22 @@ std::deque<std::string> embed_python_code(std::deque<std::string> lines, const s
     return new_lines;
 }
 
+void html_to_file(const std::deque<std::string>& htmlDeque, const std::string& filename) {
+    std::ofstream outFile(filename);
+    if (!outFile) {
+        std::cerr << "Error: Could not open file " << filename << " for writing." << std::endl;
+        return;
+    }
+    
+    for (const auto& line : htmlDeque) {
+        outFile << line << "\n";
+    }
+    
+    outFile.close();
+    if (!outFile) {
+        std::cerr << "Error: Failed to write to file " << filename << "." << std::endl;
+    }
+}
 
 
 
@@ -167,10 +183,12 @@ int main(int argc, char* argv[]) {
     std::vector<std::vector<std::string>> python_code = parse_python_code(lines);
     std::vector<std::vector<std::string>> executed_code = execute_python_code(python_code);
     std::deque<std::string> embedded_code = embed_python_code(lines, executed_code);
+    html_to_file(embedded_code, argv[1]+std::string("_formatted.html"));
 
-    for (const std::string& line : embedded_code) {
-        std::cout << line << std::endl;
-    }
+
+    // for (const std::string& line : embedded_code) {
+    //     std::cout << line << std::endl;
+    // }
 
     // for (const std::string& line : embedded_code) {
     //     std::cout << line << std::endl;
