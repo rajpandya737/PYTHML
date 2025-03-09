@@ -13,9 +13,9 @@ HTMLX is written in HTML files. The syntax is the same as HTML, but using the <p
 <html lang="en">
 <head>
     <python>
-        x = 0
-        for i in range(10):
-            print(f"<p>{x}</p>")
+x = 0
+for i in range(10):
+    print(f"<p>{x}</p>")
     </python>
 </head>
 </html>

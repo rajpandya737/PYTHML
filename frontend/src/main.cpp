@@ -73,6 +73,47 @@ std::vector<std::vector<std::string>> parse_python_code(const std::deque<std::st
 }
 
 
+std::vector<std::vector<std::string>> execute_python_code(const std::vector<std::vector<std::string>>& python_code) {
+    std::vector<std::vector<std::string>> executed_code;
+
+    Py_Initialize();
+
+    PyObject* sys = PyImport_ImportModule("sys");
+    PyObject* io = PyImport_ImportModule("io");
+
+    for (const std::vector<std::string>& code : python_code) {
+        std::string full_code;
+        std::vector<std::string> code_output;
+
+        for (const std::string& line : code) {
+            full_code += line + "\n";  
+        }
+
+        PyObject* new_stdout = PyObject_CallMethod(io, "StringIO", nullptr);
+        PyObject_SetAttrString(sys, "stdout", new_stdout);
+        PyRun_SimpleString(full_code.c_str());
+
+        PyObject* output = PyObject_CallMethod(new_stdout, "getvalue", nullptr);
+        if (output != nullptr) {
+            const char* output_cstr = PyUnicode_AsUTF8(output);
+            if (output_cstr) {
+                code_output.push_back(std::string(output_cstr));
+            }
+            Py_DECREF(output);
+        }
+
+        executed_code.push_back(code_output);
+        Py_DECREF(new_stdout);
+    }
+
+    Py_Finalize();
+
+    return executed_code;
+}
+
+
+
+
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -96,7 +137,7 @@ int main(int argc, char* argv[]) {
     valid_python_tag(lines);
     // next step is to go into the file and parse code inside the python tags
     std::vector<std::vector<std::string>> python_code = parse_python_code(lines);
-    // std::vector<std::string> executed_code = execute_python_code(python_code);
+    std::vector<std::vector<std::string>> executed_code = execute_python_code(python_code);
 
     
 
