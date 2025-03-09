@@ -111,6 +111,34 @@ std::vector<std::vector<std::string>> execute_python_code(const std::vector<std:
     return executed_code;
 }
 
+std::deque<std::string> embed_python_code(std::deque<std::string> lines, const std::vector<std::vector<std::string>>& executed_code) {
+    bool in_python_block = false;
+    std::deque<std::string> new_lines;
+    int executed_code_index = 0;
+    std::cout << executed_code.size() << std::endl;
+    for (const std::string& line : lines) {
+        if (line.find("<python>") != std::string::npos) {
+            in_python_block = true;
+            for (const std::string& code_line : executed_code[executed_code_index]) {
+                new_lines.push_back(code_line);
+            }
+            continue;
+        }
+
+        if (line.find("</python>") != std::string::npos) {
+            in_python_block = false;
+            executed_code_index++;
+            continue;
+        }
+
+        if (!in_python_block) {
+            new_lines.push_back(line);
+
+        }
+    }
+    return new_lines;
+}
+
 
 
 
@@ -138,8 +166,15 @@ int main(int argc, char* argv[]) {
     // next step is to go into the file and parse code inside the python tags
     std::vector<std::vector<std::string>> python_code = parse_python_code(lines);
     std::vector<std::vector<std::string>> executed_code = execute_python_code(python_code);
+    std::deque<std::string> embedded_code = embed_python_code(lines, executed_code);
 
-    
+    for (const std::string& line : embedded_code) {
+        std::cout << line << std::endl;
+    }
+
+    // for (const std::string& line : embedded_code) {
+    //     std::cout << line << std::endl;
+    // }
 
     return EXIT_SUCCESS;
 }
