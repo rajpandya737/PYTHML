@@ -4,13 +4,8 @@
 #include <vector>
 #include <Python.h>
 #include <cctype>
+#include "lexer.h"
 
-enum class TokenType {
-    OPEN_PYTHON,
-    CLOSE_PYTHON,
-    TEXT,
-    EOF_TOKEN
-};
 
 
 
