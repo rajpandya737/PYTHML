@@ -154,7 +154,9 @@ std::vector<std::string> embed_python_code(std::vector<std::string> lines, const
     auto executed_code_it = executed_code.begin();
 
     for (const std::string& line : lines) {
-        if (line.find("<python>") != std::string::npos) {
+        std::string lower = line;
+        transform(lower.begin(), lower.end(), lower.begin(), ::tolower); 
+        if (lower.find("<python>") != std::string::npos) {
             in_python_block = true;
             while (executed_code_it != executed_code.end() && (*executed_code_it) != "</python>") {
                 new_lines.push_back(*executed_code_it);
@@ -163,7 +165,7 @@ std::vector<std::string> embed_python_code(std::vector<std::string> lines, const
             continue;
         }
 
-        if (line.find("</python>") != std::string::npos) {
+        if (lower.find("</python>") != std::string::npos) {
             in_python_block = false;
             if (executed_code_it != executed_code.end()) {
                 ++executed_code_it;
@@ -227,6 +229,7 @@ int main(int argc, char* argv[]) {
     std::vector<std::string> executed_code = execute_python_code(python_code);
     std::vector<std::string> embedded_code = embed_python_code(lines, executed_code);
     html_to_file(embedded_code, argv[1]+std::string("_formatted.html"));
+
 
 
     // for (const std::string& line : python_code) {
