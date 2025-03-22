@@ -11,6 +11,7 @@ set(SOURCES
     src/main.cpp
     src/parser.cpp
     src/file.cpp
+    src/runner.cpp
 )
 
 add_executable(PYTHML ${SOURCES})
