@@ -9,6 +9,7 @@ include_directories(${Python3_INCLUDE_DIRS} include)
 
 set(SOURCES
     src/main.cpp
+    src/parser.cpp
 )
 
 add_executable(PYTHML ${SOURCES})

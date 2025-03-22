@@ -4,6 +4,7 @@
 #include <vector>
 #include <Python.h>
 #include <cctype>
+#include "parser.hpp"
 
 
 bool valid_python_tag(const std::vector<std::string>& lines) {
