@@ -5,6 +5,7 @@
 #include <Python.h>
 #include <cctype>
 #include "parser.hpp"
+#include "file.hpp"
 
 
 std::vector<std::string> execute_python_code(const std::vector<std::string>& python_code) {
@@ -60,88 +61,20 @@ std::vector<std::string> execute_python_code(const std::vector<std::string>& pyt
 }
 
 
-std::vector<std::string> embed_python_code(std::vector<std::string> lines, const std::vector<std::string>& executed_code) {
-    bool in_python_block = false;
-    std::vector<std::string> new_lines;
-    auto executed_code_it = executed_code.begin();
-
-    for (const std::string& line : lines) {
-        std::string lower = line;
-        transform(lower.begin(), lower.end(), lower.begin(), ::tolower); 
-        if (lower.find("<python>") != std::string::npos) {
-            in_python_block = true;
-            while (executed_code_it != executed_code.end() && (*executed_code_it) != "</python>") {
-                new_lines.push_back(*executed_code_it);
-                ++executed_code_it;
-            }
-            continue;
-        }
-
-        if (lower.find("</python>") != std::string::npos) {
-            in_python_block = false;
-            if (executed_code_it != executed_code.end()) {
-                ++executed_code_it;
-            }
-            continue;
-        }
-
-        if (!in_python_block) {
-            new_lines.push_back(line);
-        }
-    }
-
-    return new_lines;
-}
-
-
-
-void html_to_file(const std::vector<std::string>& htmlVector, const std::string& filename) {
-    std::ofstream outFile(filename);
-    if (!outFile) {
-        std::cerr << "Error: Could not open file " << filename << " for writing." << std::endl;
-        return;
-    }
-    
-    for (const auto& line : htmlVector) {
-        outFile << line << "\n";
-    }
-    
-    outFile.close();
-    if (!outFile) {
-        std::cerr << "Error: Failed to write to file " << filename << "." << std::endl;
-    }
-}
-
-
-
-
-
 int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <HTML Filename>" << std::endl;
-        return EXIT_FAILURE;
-    }
+    Parser parse;
+    File file;
 
-    std::ifstream file(argv[1]);
-    if (!file.is_open()) {
-        std::cerr << "File not found" << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    std::vector<std::string> lines;
-    std::string line;
-    while (getline(file, line)) {  
-        lines.push_back(line);
-    }    
+    
+    std::vector<std::string> lines = file.read_file(argc, argv);   
 
     // check that there are valid python tags in the file
-    Parser parse;
     parse.valid_python_tag(lines);
     // next step is to go into the file and parse code inside the python tags
     std::vector<std::string> python_code = parse.parse_python_code(lines);
     std::vector<std::string> executed_code = execute_python_code(python_code);
-    std::vector<std::string> embedded_code = embed_python_code(lines, executed_code);
-    html_to_file(embedded_code, argv[1]+std::string("_formatted.html"));
+    std::vector<std::string> embedded_code = file.embed_python_code(lines, executed_code);
+    file.html_to_file(embedded_code, argv[1]+std::string("_formatted.html"));
 
 
 
