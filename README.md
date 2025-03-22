@@ -1,12 +1,12 @@
-# HTMLX
+# PYTHML
 
 ## About
 
-HTMLX is a programming tool that allows you to write Python code inside of HTML files. Currently in development.
+PYTHML (Python + HTML, yes it's stupid but someone already has dibs on PYHTML) is a programming tool that allows you to write Python code inside of HTML files. Currently in development.
 
-## How to Write HTMLX
+## How to Write PYTHML
 
-HTMLX is written in HTML files. The syntax is the same as HTML, but using the <python> tag, you can write Python code. Here is an example of a simple HTMLX file:
+PYTHML is written in HTML files. The syntax is the same as HTML, but using the <python> tag, you can write Python code. Here is an example of a simple PYTHML file:
 
 ```html
 <!DOCTYPE html>
@@ -26,16 +26,16 @@ The resultant code will be:
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <p>0</p>
-    <p>1</p>
-    <p>2</p>
-    <p>3</p>
-    <p>4</p>
-    <p>5</p>
-    <p>6</p>
-    <p>7</p>
-    <p>8</p>
-    <p>9</p>
+<p>0</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
 </head>
 </html>
 ```

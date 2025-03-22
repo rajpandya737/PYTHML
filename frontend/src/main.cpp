@@ -4,6 +4,7 @@
 #include <vector>
 #include <Python.h>
 #include <cctype>
+#include "lexer.h"
 
 
 bool valid_python_tag(const std::deque<std::string>& lines) {
