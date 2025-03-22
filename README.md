@@ -51,9 +51,9 @@ Download the latest executable from the releases page. Run the executable and pa
 
 ## Future Plans
 
+- [ ] Download package via pip
 - [ ] Global syntax
-- [ ] Allow for input variables
+- [ ] Allow for input variables via Python injection in scripts
 - [ ] Render HTMLX files in Python using a custom library
-- [ ] Better code structure and organization
 
 
