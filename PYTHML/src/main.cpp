@@ -77,9 +77,9 @@ std::vector<std::string> parse_python_code(const std::vector<std::string>& lines
         if (lines[line_number].find("<python>") != std::string::npos) {
             line_number++;
             while (line_number < lines.size() && 
-            lines[line_number].find("</python>") == std::string::npos && 
-            lines[line_number].find_first_not_of(" \t\n\r\f\v") != std::string::npos) {
-                python_code.push_back(lines[line_number]);
+            lines[line_number].find("</python>") == std::string::npos) {
+                if (lines[line_number].find_first_not_of(" \t\n\r\f\v") != std::string::npos)
+                    python_code.push_back(lines[line_number]);
                 line_number++;
             }
         }
