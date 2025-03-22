@@ -15,7 +15,7 @@ set(SOURCES
     src/parser.cpp
     src/file.cpp
     src/runner.cpp
-    src/utils.cpp
+    src/format.cpp
 )
 
 add_executable(PYTHML ${SOURCES})

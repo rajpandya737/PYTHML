@@ -1,6 +1,7 @@
 #include "parser.hpp"
 #include "file.hpp"
 #include "runner.hpp"
+#include "format.hpp"
 
 
 int main(int argc, char* argv[]) {
@@ -14,7 +15,9 @@ int main(int argc, char* argv[]) {
     std::vector<std::string> python_code = parse.parse_python_code(lines);
     std::vector<std::string> executed_code = runner.execute_python_code(python_code);
     std::vector<std::string> embedded_code = file.embed_python_code(lines, executed_code);
-    file.html_to_file(embedded_code, argv[1]+std::string("_formatted.html"));
+    const std::vector<std::string> formatted_code = formatHTML(embedded_code);
+    file.html_to_file(formatted_code, argv[1]+std::string("_formatted.html"));
+
 
 
 

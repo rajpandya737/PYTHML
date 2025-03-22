@@ -5,4 +5,4 @@
 #include <tidybuffio.h>
 #include <vector>
 
-const std::vector<std::string> formatHTML(const std::vector<std::string>&);
+const std::vector<std::string> formatHTML(const std::vector<std::string>& inputHtml);
