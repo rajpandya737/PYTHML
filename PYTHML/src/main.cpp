@@ -43,25 +43,31 @@ bool valid_python_tag(const std::vector<std::string>& lines) {
 }
 
 int get_min_indentation(const std::vector<std::string>& lines) {
-    int min_indents = 99999;
+    size_t min_indents = 99999;
     for (const std::string& line : lines) {
         if (!line.find_first_not_of(" \t\n\r\f\v") == std::string::npos) {
             continue;
         }
         else {
-            int leading_spaces = static_cast<int>(line.find_first_not_of(" \t"));
+            size_t leading_spaces = line.find_first_not_of(" \t");
             if (leading_spaces != std::string::npos) {
                 min_indents = std::min(min_indents, leading_spaces);
             }
         }
     }
-    return 0;
+    return min_indents;
 }
 
 
-std::vector<std::string> remove_white_space(const std::vector<std::string>& lines){
-    continue;
+std::vector<std::string> remove_white_space(int whitespace, const std::vector<std::string>& lines) {
+    std::vector<std::string> python_code;
+    python_code.reserve(lines.size());  
+    for (const std::string& line : lines) {
+        python_code.push_back(line.substr(whitespace));
+    }
+    return python_code;
 }
+
 
 std::vector<std::string> parse_python_code(const std::vector<std::string>& lines) {
     std::vector<std::string> python_code;
@@ -70,7 +76,9 @@ std::vector<std::string> parse_python_code(const std::vector<std::string>& lines
     while (line_number < lines.size()) {
         if (lines[line_number].find("<python>") != std::string::npos) {
             line_number++;
-            while (line_number < lines.size() && lines[line_number].find("</python>") == std::string::npos) {
+            while (line_number < lines.size() && 
+            lines[line_number].find("</python>") == std::string::npos && 
+            lines[line_number].find_first_not_of(" \t\n\r\f\v") != std::string::npos) {
                 python_code.push_back(lines[line_number]);
                 line_number++;
             }
@@ -79,7 +87,7 @@ std::vector<std::string> parse_python_code(const std::vector<std::string>& lines
     }
 
     int min_indent = get_min_indentation(python_code);
-    python_code = remove_white_space(python_code)
+    python_code = remove_white_space(min_indent, python_code);
 
     return python_code;
 }
@@ -216,14 +224,14 @@ int main(int argc, char* argv[]) {
     valid_python_tag(lines);
     // next step is to go into the file and parse code inside the python tags
     std::vector<std::string> python_code = parse_python_code(lines);
-    // std::vector<std::string> executed_code = execute_python_code(python_code);
-    // std::vector<std::string> embedded_code = embed_python_code(lines, executed_code);
-    // html_to_file(embedded_code, argv[1]+std::string("_formatted.html"));
+    std::vector<std::string> executed_code = execute_python_code(python_code);
+    std::vector<std::string> embedded_code = embed_python_code(lines, executed_code);
+    html_to_file(embedded_code, argv[1]+std::string("_formatted.html"));
 
 
-    for (const std::string& line : python_code) {
-        std::cout << "START" << line << "END" <<std::endl;
-    }
+    // for (const std::string& line : python_code) {
+    //     std::cout << "START" << line << "END" <<std::endl;
+    // }
 
     // for (const std::string& line : embedded_code) {
     //     std::cout << line << std::endl;
