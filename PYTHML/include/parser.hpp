@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-class parser {
+class Parser {
 public:
     bool valid_python_tag(const std::vector<std::string>& lines);
     int get_min_indentation(const std::vector<std::string>& lines);

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "parser.hpp" 
 
-bool parser::valid_python_tag(const std::vector<std::string>& lines) {
+bool Parser::valid_python_tag(const std::vector<std::string>& lines) {
     bool in_python_block = false;
     int line_number = 0;
     int last_python_line = 0;
@@ -37,7 +37,7 @@ bool parser::valid_python_tag(const std::vector<std::string>& lines) {
     return valid;
 }
 
-int parser::get_min_indentation(const std::vector<std::string>& lines) {
+int Parser::get_min_indentation(const std::vector<std::string>& lines) {
     size_t min_indents = 99999;
     for (const std::string& line : lines) {
         if (!line.find_first_not_of(" \t\n\r\f\v") == std::string::npos) {
@@ -53,7 +53,7 @@ int parser::get_min_indentation(const std::vector<std::string>& lines) {
     return min_indents;
 }
 
-std::vector<std::string> parser::remove_white_space(int whitespace, const std::vector<std::string>& lines) {
+std::vector<std::string> Parser::remove_white_space(int whitespace, const std::vector<std::string>& lines) {
     std::vector<std::string> python_code;
     python_code.reserve(lines.size());  
     for (const std::string& line : lines) {
@@ -62,7 +62,7 @@ std::vector<std::string> parser::remove_white_space(int whitespace, const std::v
     return python_code;
 }
 
-std::vector<std::string> parser::parse_python_code(const std::vector<std::string>& lines) {
+std::vector<std::string> Parser::parse_python_code(const std::vector<std::string>& lines) {
     std::vector<std::string> python_code;
     int line_number = 0;
 
