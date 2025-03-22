@@ -46,90 +46,109 @@ bool valid_python_tag(const std::deque<std::string>& lines) {
     return valid;
 }
 
-std::vector<std::vector<std::string>> parse_python_code(const std::deque<std::string>& lines) {
-    // This function will read Python code inside of Python tags
-    std::vector<std::vector<std::string>> python_code;
+std::deque<std::string> parse_python_code(const std::deque<std::string>& lines) {
+    std::deque<std::string> python_code;
     int line_number = 0;
+
     while (line_number < lines.size()) {
         if (lines[line_number].find("<python>") != std::string::npos) {
             line_number++;
-            std::vector<std::string> code;
-            while (lines[line_number].find("</python>") == std::string::npos) {
-                code.push_back(lines[line_number]);
+            while (line_number < lines.size() && lines[line_number].find("</python>") == std::string::npos) {
+                python_code.push_back(lines[line_number]);
                 line_number++;
             }
-            python_code.push_back(code);
         }
         line_number++;
     }
+    
     return python_code;
 }
 
 
-std::vector<std::vector<std::string>> execute_python_code(const std::vector<std::vector<std::string>>& python_code) {
-    std::vector<std::vector<std::string>> executed_code;
+std::deque<std::string> execute_python_code(const std::deque<std::string>& python_code) {
+    std::deque<std::string> executed_code;
 
     Py_Initialize();
 
     PyObject* sys = PyImport_ImportModule("sys");
     PyObject* io = PyImport_ImportModule("io");
 
-    for (const std::vector<std::string>& code : python_code) {
-        std::string full_code;
-        std::vector<std::string> code_output;
-
-        for (const std::string& line : code) {
-            full_code += line + "\n";  
-        }
-
-        PyObject* new_stdout = PyObject_CallMethod(io, "StringIO", nullptr);
-        PyObject_SetAttrString(sys, "stdout", new_stdout);
-        PyRun_SimpleString(full_code.c_str());
-
-        PyObject* output = PyObject_CallMethod(new_stdout, "getvalue", nullptr);
-        if (output != nullptr) {
-            const char* output_cstr = PyUnicode_AsUTF8(output);
-            if (output_cstr) {
-                code_output.push_back(std::string(output_cstr));
-            }
-            Py_DECREF(output);
-        }
-
-        executed_code.push_back(code_output);
-        Py_DECREF(new_stdout);
+    if (!sys || !io) {
+        PyErr_Print();
+        Py_Finalize();
+        return executed_code;
     }
 
+    std::string full_code;
+    for (const std::string& line : python_code) {
+        full_code += line + "\n";  
+    }
+
+    PyObject* new_stdout = PyObject_CallMethod(io, "StringIO", nullptr);
+    if (!new_stdout) {
+        PyErr_Print();
+        Py_Finalize();
+        return executed_code;
+    }
+
+    PyObject_SetAttrString(sys, "stdout", new_stdout);
+    PyRun_SimpleString(full_code.c_str());
+
+    PyObject* output = PyObject_CallMethod(new_stdout, "getvalue", nullptr);
+    if (output != nullptr) {
+        const char* output_cstr = PyUnicode_AsUTF8(output);
+        if (output_cstr) {
+            std::string output_str(output_cstr);
+            size_t pos = 0;
+            while ((pos = output_str.find('\n')) != std::string::npos) {
+                executed_code.push_back(output_str.substr(0, pos));
+                output_str.erase(0, pos + 1);
+            }
+            if (!output_str.empty()) {
+                executed_code.push_back(output_str);
+            }
+        }
+        Py_DECREF(output);
+    }
+
+    Py_DECREF(new_stdout);
     Py_Finalize();
 
     return executed_code;
 }
 
-std::deque<std::string> embed_python_code(std::deque<std::string> lines, const std::vector<std::vector<std::string>>& executed_code) {
+
+std::deque<std::string> embed_python_code(std::deque<std::string> lines, const std::deque<std::string>& executed_code) {
     bool in_python_block = false;
     std::deque<std::string> new_lines;
-    int executed_code_index = 0;
+    auto executed_code_it = executed_code.begin();
+
     for (const std::string& line : lines) {
         if (line.find("<python>") != std::string::npos) {
             in_python_block = true;
-            for (const std::string& code_line : executed_code[executed_code_index]) {
-                new_lines.push_back(code_line);
+            while (executed_code_it != executed_code.end() && (*executed_code_it) != "</python>") {
+                new_lines.push_back(*executed_code_it);
+                ++executed_code_it;
             }
             continue;
         }
 
         if (line.find("</python>") != std::string::npos) {
             in_python_block = false;
-            executed_code_index++;
+            if (executed_code_it != executed_code.end()) {
+                ++executed_code_it;
+            }
             continue;
         }
 
         if (!in_python_block) {
             new_lines.push_back(line);
-
         }
     }
+
     return new_lines;
 }
+
 
 void html_to_file(const std::deque<std::string>& htmlDeque, const std::string& filename) {
     std::ofstream outFile(filename);
@@ -172,8 +191,8 @@ int main(int argc, char* argv[]) {
     // check that there are valid python tags in the file
     valid_python_tag(lines);
     // next step is to go into the file and parse code inside the python tags
-    std::vector<std::vector<std::string>> python_code = parse_python_code(lines);
-    std::vector<std::vector<std::string>> executed_code = execute_python_code(python_code);
+    std::deque<std::string> python_code = parse_python_code(lines);
+    std::deque<std::string> executed_code = execute_python_code(python_code);
     std::deque<std::string> embedded_code = embed_python_code(lines, executed_code);
     html_to_file(embedded_code, argv[1]+std::string("_formatted.html"));
 
