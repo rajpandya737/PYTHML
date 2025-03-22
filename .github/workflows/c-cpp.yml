@@ -27,15 +27,15 @@ jobs:
     - name: Configure with CMake
       run: |
         mkdir -p frontend/build
-        cd frontend/build
+        cd PYTHML/build
         cmake ..
 
     - name: Build with Make
       run: |
-        cd frontend/build
+        cd PYTHML/build
         make
 
     - name: Run Tests
       run: |
-        cd frontend/build
-        ./frontend ../test/cases/base.html
+        cd PYTHML/build
+        ./PYTHML ../test/cases/base.html
