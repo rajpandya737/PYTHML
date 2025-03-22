@@ -13,8 +13,8 @@ PYTHML is written in HTML files. The syntax is the same as HTML, but using the <
 <html lang="en">
 <head>
     <python>
-for i in range(10):
-    print(f"<p>{i}</p>")
+        for i in range(10):
+            print(f"<p>{i}</p>")
     </python>
 </head>
 </html>
@@ -43,7 +43,7 @@ The resultant code will be:
 ## Currently Supported Features
 Only basic Python code inside of the <python> tag is supported. 
 
-Currently the program just runs whatever is inside the <python> tag and replaces the tag with the output, but in the future, this program will use its own basic python interpreter, won't rely on print() statements to generate html, allow for input variables, and more.
+Currently the program just runs whatever is inside the <python> tag (the python tag is case-insensitive) and replaces the tag with the output, but in the future, this program will run using something like pythml index.html which you can download via pip, won't rely on print() statements to generate html, allow for input variables in Python scripts, and more.
 
 ## How to use
 
@@ -51,7 +51,6 @@ Download the latest executable from the releases page. Run the executable and pa
 
 ## Future Plans
 
-- [ ] Create a basic Python interpreter
 - [ ] Global syntax
 - [ ] Allow for input variables
 - [ ] Render HTMLX files in Python using a custom library
