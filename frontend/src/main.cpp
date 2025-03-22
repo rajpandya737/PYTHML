@@ -5,14 +5,6 @@
 #include <Python.h>
 #include <cctype>
 
-enum class TokenType {
-    OPEN_PYTHON,
-    CLOSE_PYTHON,
-    TEXT,
-    EOF_TOKEN
-};
-
-
 
 bool valid_python_tag(const std::deque<std::string>& lines) {
     // checks to make sure that there are valid python tags in the HTML file
