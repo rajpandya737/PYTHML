@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(frontend)
+project(PYTHML)
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
@@ -9,12 +9,11 @@ include_directories(${Python3_INCLUDE_DIRS} include)
 
 set(SOURCES
     src/main.cpp
-    src/lexer.cpp
 )
 
-add_executable(frontend ${SOURCES})
+add_executable(PYTHML ${SOURCES})
 
-target_link_libraries(frontend ${Python3_LIBRARIES})
+target_link_libraries(PYTHML ${Python3_LIBRARIES})
 
 set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 
