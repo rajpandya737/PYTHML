@@ -1,5 +1,25 @@
 #include "parser.hpp" 
 
+/**
+ * @file parser.cpp
+ * @author Raj Pandya
+ * @brief This class parses HTML code 
+ * @version 0.1
+ * @date 2025-03-22
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
+ /**
+  * @brief checks that the HTML provided has valid python tags 
+  *        1. all opening tags must have a closing tag
+  *        2. a python tag cannot exist in another python tag
+  * 
+  * @param lines 
+  * @return true 
+  * @return false 
+  */
 bool Parser::valid_python_tag(const std::vector<std::string>& lines) {
     bool in_python_block = false;
     int line_number = 0;
@@ -36,6 +56,12 @@ bool Parser::valid_python_tag(const std::vector<std::string>& lines) {
     return valid;
 }
 
+/**
+ * @brief how indented is a current block of code 
+ * 
+ * @param lines 
+ * @return int 
+ */
 int Parser::get_min_indentation(const std::vector<std::string>& lines) {
     size_t min_indents = 99999;
     for (const std::string& line : lines) {
@@ -52,6 +78,14 @@ int Parser::get_min_indentation(const std::vector<std::string>& lines) {
     return min_indents;
 }
 
+/**
+ * @brief removes the first whitespace characters in each vector element
+ *        this is done so the python interpreter can read the code without the leading spaces
+ * 
+ * @param whitespace 
+ * @param lines 
+ * @return std::vector<std::string> 
+ */
 std::vector<std::string> Parser::remove_white_space(int whitespace, const std::vector<std::string>& lines) {
     std::vector<std::string> python_code;
     python_code.reserve(lines.size());  
@@ -61,6 +95,12 @@ std::vector<std::string> Parser::remove_white_space(int whitespace, const std::v
     return python_code;
 }
 
+/**
+ * @brief find the python code and adds it to a vector
+ * 
+ * @param lines 
+ * @return std::vector<std::string> 
+ */
 std::vector<std::string> Parser::parse_python_code(const std::vector<std::string>& lines) {
     std::vector<std::string> python_code;
     int line_number = 0;

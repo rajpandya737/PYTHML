@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.25)
-project(PYTHML)
+project(pythml)
 
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 find_package(PkgConfig REQUIRED)
@@ -18,9 +18,9 @@ set(SOURCES
     src/format.cpp
 )
 
-add_executable(PYTHML ${SOURCES})
+add_executable(pythml ${SOURCES})
 
-target_link_libraries(PYTHML ${Python3_LIBRARIES} ${TIDY_LIBRARIES})
+target_link_libraries(pythml ${Python3_LIBRARIES} ${TIDY_LIBRARIES})
 
 set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 

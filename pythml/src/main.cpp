@@ -3,7 +3,24 @@
 #include "runner.hpp"
 #include "format.hpp"
 
+/**
+ * @file main.cpp
+ * @author Raj Pandya
+ * @brief Entry point of the program
+ * @version 0.1
+ * @date 2025-03-22
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
 
+/**
+ * @brief runs the whole progrram
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
 int main(int argc, char* argv[]) {
     Parser parse;        // parses all HTML code and breaks it down
     File file;           // all file related operations in this class

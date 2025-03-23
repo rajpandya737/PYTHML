@@ -1,5 +1,16 @@
 #pragma once
 
+/**
+ * @file file.hpp
+ * @author Raj Pandya
+ * @brief This class handles all functionality related to files, primarily reading and writing
+ * @version 0.1
+ * @date 2025-03-22
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
