@@ -1,12 +1,14 @@
 #include "parser.hpp"
 #include "file.hpp"
 #include "runner.hpp"
+#include "format.hpp"
 
 
 int main(int argc, char* argv[]) {
-    Parser parse;
-    File file;
-    Runner runner;
+    Parser parse;        // parses all HTML code and breaks it down
+    File file;           // all file related operations in this class
+    Runner runner;       // all code related to python execution is in this class
+    Formatter formatter; // all code related to formatting HTML is in this class
     
     std::vector<std::string> lines = file.read_file(argc, argv);   
 
@@ -14,7 +16,9 @@ int main(int argc, char* argv[]) {
     std::vector<std::string> python_code = parse.parse_python_code(lines);
     std::vector<std::string> executed_code = runner.execute_python_code(python_code);
     std::vector<std::string> embedded_code = file.embed_python_code(lines, executed_code);
-    file.html_to_file(embedded_code, argv[1]+std::string("_formatted.html"));
+    const std::vector<std::string> formatted_code = formatter.format_html(embedded_code);
+    file.html_to_file(formatted_code, argv[1]+std::string("_formatted.html"));
+
 
 
 
