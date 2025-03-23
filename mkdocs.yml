@@ -1,1 +1,15 @@
-site_name: My Docs
+site_name: PYTHML
+theme:
+  name: material
+  palette:
+    primary: green
+    accent: light-green
+    background: white
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Usage: usage.md
+  - Examples: examples.md
+  - About: about.md
+  - License: license.md
+  - GitHub: https://github.com/rajpandya737/PYTHML
