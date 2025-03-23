@@ -1,5 +1,16 @@
 #include "file.hpp"
 
+/**
+ * @file file.cpp
+ * @author Raj Pandya
+ * @brief 
+ * @version 0.1
+ * @date 2025-03-22
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ */
+
 
 std::vector<std::string> File::embed_python_code(std::vector<std::string> lines, const std::vector<std::string>& executed_code) {
     bool in_python_block = false;
