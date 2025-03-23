@@ -37,16 +37,16 @@ jobs:
 
     - name: Configure with CMake
       run: |
-        mkdir -p PYTHML/build
-        cd PYTHML/build
+        mkdir -p pythml/build
+        cd pythml/build
         cmake ..
 
     - name: Build with Make
       run: |
-        cd PYTHML/build
+        cd pythml/build
         make
 
     - name: Run Tests
       run: |
-        cd PYTHML/build
-        ./PYTHML ../test/cases/base.html
+        cd pythml/build
+        ./pythml ../test/cases/base.html
