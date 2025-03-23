@@ -8,6 +8,9 @@ pkg_check_modules(TIDY REQUIRED tidy)
 set(CMAKE_CXX_COMPILER g++)
 
 include_directories(${Python3_INCLUDE_DIRS} ${TIDY_INCLUDE_DIRS} include) 
+
+# Explicitly point to the static library of tidy
+set(TIDY_STATIC_LIB /usr/local/lib/libtidy.a)  # Update this path if necessary
 link_directories(${TIDY_LIBRARY_DIRS})
 
 set(SOURCES
@@ -20,7 +23,8 @@ set(SOURCES
 
 add_executable(pythml ${SOURCES})
 
-target_link_libraries(pythml ${Python3_LIBRARIES} ${TIDY_LIBRARIES})
+# Link dynamically with Python3 and statically with tidy
+target_link_libraries(pythml ${Python3_LIBRARIES} ${TIDY_STATIC_LIB})
 
 set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 
