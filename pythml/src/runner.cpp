@@ -3,7 +3,7 @@
 /**
  * @file runner.cpp
  * @author Raj Pandya
- * @brief 
+ * @brief This class runs and executes the Python code
  * @version 0.1
  * @date 2025-03-22
  * 
@@ -11,6 +11,12 @@
  * 
  */
 
+ /**
+  * @brief runs python code using the python api
+  * 
+  * @param python_code 
+  * @return std::vector<std::string> 
+  */
 std::vector<std::string> Runner::execute_python_code(const std::vector<std::string>& python_code) {
     std::vector<std::string> executed_code;
 

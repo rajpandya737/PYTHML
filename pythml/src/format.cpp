@@ -4,7 +4,7 @@
 /**
  * @file format.cpp
  * @author Raj Pandya
- * @brief 
+ * @brief This class formats and corrects HTML strings 
  * @version 0.1
  * @date 2025-03-22
  * 
@@ -12,6 +12,12 @@
  * 
  */
 
+ /**
+  * @brief turns a vector into a char array (string)
+  * 
+  * @param input_html 
+  * @return const char* 
+  */
 const char* Formatter::flatten_vector_to_string(const std::vector<std::string>& input_html) {
     static std::string result;  
     result.clear();  
@@ -24,7 +30,12 @@ const char* Formatter::flatten_vector_to_string(const std::vector<std::string>& 
 
 
 
-
+/**
+ * @brief cleans the html, indents it, and makes sure it is syntactically correct
+ * 
+ * @param input_html 
+ * @return const std::vector<std::string> 
+ */
 const std::vector<std::string> Formatter::format_html(const std::vector<std::string>& input_html) {
     
     const char* input = flatten_vector_to_string(input_html);
@@ -45,8 +56,6 @@ const std::vector<std::string> Formatter::format_html(const std::vector<std::str
 
     // Convert the Tidy output buffer into a string
     std::string formattedHtml(reinterpret_cast<char*>(output.bp), output.size);
-
-    std::cout << output.bp;
 
     // Clean up
     tidyRelease(tdoc);

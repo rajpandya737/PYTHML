@@ -3,7 +3,7 @@
 /**
  * @file file.cpp
  * @author Raj Pandya
- * @brief 
+ * @brief This class handles all functionality related to files, primarily reading and writing
  * @version 0.1
  * @date 2025-03-22
  * 
@@ -11,7 +11,13 @@
  * 
  */
 
-
+/**
+ * @brief Gets all the code embedded in between HTML <python> </python> tags
+ * 
+ * @param lines 
+ * @param executed_code 
+ * @return std::vector<std::string> 
+ */
 std::vector<std::string> File::embed_python_code(std::vector<std::string> lines, const std::vector<std::string>& executed_code) {
     bool in_python_block = false;
     std::vector<std::string> new_lines;
@@ -45,6 +51,13 @@ std::vector<std::string> File::embed_python_code(std::vector<std::string> lines,
     return new_lines;
 }
 
+
+/**
+ * @brief Writes a vector of strings as a file
+ * 
+ * @param htmlVector 
+ * @param filename 
+ */
 void File::html_to_file(const std::vector<std::string>& htmlVector, const std::string& filename) {
     std::ofstream outFile(filename);
     if (!outFile) {
@@ -62,6 +75,13 @@ void File::html_to_file(const std::vector<std::string>& htmlVector, const std::s
     }
 }
 
+/**
+ * @brief Reads a file and returns a vector of strings, line separated
+ * 
+ * @param argc 
+ * @param argv 
+ * @return std::vector<std::string> 
+ */
 std::vector<std::string> File::read_file(int argc, char* argv[]){
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " <HTML Filename>" << std::endl;

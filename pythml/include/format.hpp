@@ -3,7 +3,7 @@
 /**
  * @file format.hpp
  * @author Raj Pandya
- * @brief 
+ * @brief This class formats and corrects HTML strings 
  * @version 0.1
  * @date 2025-03-22
  * 
