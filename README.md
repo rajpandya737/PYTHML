@@ -2,11 +2,11 @@
 
 ## About
 
-PYTHML (Python + HTML, yes it's stupid but someone already has dibs on PYHTML) is a programming tool that allows you to write Python code inside of HTML files. Currently in development.
+PYTHML (Python + HTML, yes it's stupid but someone already has dibs on PYHTML) is a programming tool that allows you to write Python code inside of HTML files. Currently in development. Python 3.8+ is required to run this program.
 
 ## How to Write PYTHML
 
-PYTHML is written in HTML files. The syntax is the same as HTML, but using the <python> tag, you can write Python code. The program formats and attempts to fix your HTML, for example, it will add the <!DOCTYPE html> if missing. Here is an example of a simple PYTHML file and its transition:
+PYTHML is written in HTML files. The syntax is the same as HTML, but using the <python> tag, you can write Python code. The program formats and attempts to fix your HTML, for example, it will add the `<!DOCTYPE html>` tag if missing, and a few other corrections. Here is an example of a PYTHML file and its transition:
 
 ```html
 <html lang="en">
