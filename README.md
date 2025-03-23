@@ -6,37 +6,40 @@ PYTHML (Python + HTML, yes it's stupid but someone already has dibs on PYHTML) i
 
 ## How to Write PYTHML
 
-PYTHML is written in HTML files. The syntax is the same as HTML, but using the <python> tag, you can write Python code. Here is an example of a simple PYTHML file:
+PYTHML is written in HTML files. The syntax is the same as HTML, but using the <python> tag, you can write Python code. The program formats and attempts to fix your HTML, for example, it will add the <!DOCTYPE html> if missing. Here is an example of a simple PYTHML file and its transition:
 
 ```html
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <python>
-        for i in range(10):
-            print(f"<p>{i}</p>")
-    </python>
 </head>
+<body>
+<div>
+<python>
+    x = 3
+    for i in range(x):
+        print(f"<p>{i}</p>")
+</python>
+</div>
+</body>
 </html>
 ```
 
-The resultant code will be:
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<p>0</p>
-<p>1</p>
-<p>2</p>
-<p>3</p>
-<p>4</p>
-<p>5</p>
-<p>6</p>
-<p>7</p>
-<p>8</p>
-<p>9</p>
+  <meta name="generator" content=
+  "HTML Tidy for HTML5 for Linux version 5.6.0">
+  <title></title>
 </head>
+<body>
+  <div>
+    <p>0</p>
+    <p>1</p>
+    <p>2</p>
+  </div>
+</body>
 </html>
 ```
 
