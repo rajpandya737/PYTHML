@@ -50,15 +50,5 @@ Only basic Python code inside of the <python> tag is supported.
 
 Currently the program just runs whatever is inside the <python> tag (the python tag is case-insensitive) and replaces the tag with the output, but in the future, this program will run using something like pythml index.html which you can download via pip, won't rely on print() statements to generate html, allow for input variables in Python scripts, and more.
 
-## How to use
-
-Download the latest executable from the releases page. Run the executable and pass the path to the HTMLX executable as an argument. The program will then compile the HTMLX file into a normal HTML file.
-
-## Future Plans
-
-- [ ] Download package via pip
-- [ ] Global syntax
-- [ ] Allow for input variables via Python injection in scripts
-- [ ] Render HTMLX files in Python using a custom library
 
 
