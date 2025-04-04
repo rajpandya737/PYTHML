@@ -1,36 +1,40 @@
-#include "parser.hpp" 
+#include "parser.hpp"
 
 /**
  * @file parser.cpp
  * @author Raj Pandya
- * @brief This class parses HTML code 
+ * @brief This class parses HTML code
  * @version 0.1
  * @date 2025-03-22
- * 
+ *
  * @copyright Copyright (c) 2025
- * 
+ *
  */
 
- /**
-  * @brief checks that the HTML provided has valid python tags 
-  *        1. all opening tags must have a closing tag
-  *        2. a python tag cannot exist in another python tag
-  * 
-  * @param lines 
-  * @return true 
-  * @return false 
-  */
-bool Parser::valid_python_tag(const std::vector<std::string>& lines) {
+/**
+ * @brief checks that the HTML provided has valid python tags
+ *        1. all opening tags must have a closing tag
+ *        2. a python tag cannot exist in another python tag
+ *
+ * @param lines
+ * @return true
+ * @return false
+ */
+bool Parser::valid_python_tag(const std::vector<std::string> &lines)
+{
     bool in_python_block = false;
     int line_number = 0;
     int last_python_line = 0;
     bool valid = true;
 
-    for (const std::string& line : lines) {
+    for (const std::string &line : lines)
+    {
         line_number++;
-        if (line.find("<python>") != std::string::npos) {
-            if (in_python_block) {
-                std::cerr << "ERROR: Python tags cannot exist inside other Python tags, close the tag located at line " 
+        if (line.find("<python>") != std::string::npos)
+        {
+            if (in_python_block)
+            {
+                std::cerr << "ERROR: Python tags cannot exist inside other Python tags, close the tag located at line "
                           << last_python_line << " before using more tags\n";
                 valid = false;
             }
@@ -38,8 +42,10 @@ bool Parser::valid_python_tag(const std::vector<std::string>& lines) {
             last_python_line = line_number;
         }
 
-        if (line.find("</python>") != std::string::npos) {
-            if (!in_python_block) {
+        if (line.find("</python>") != std::string::npos)
+        {
+            if (!in_python_block)
+            {
                 std::cerr << "ERROR: Closing tag on line " << last_python_line << " does not have an opening tag.\n";
                 valid = false;
             }
@@ -48,7 +54,8 @@ bool Parser::valid_python_tag(const std::vector<std::string>& lines) {
         }
     }
 
-    if (in_python_block) {
+    if (in_python_block)
+    {
         std::cerr << "ERROR: Closing tag not found for line " << last_python_line << ".\n";
         valid = false;
     }
@@ -57,20 +64,25 @@ bool Parser::valid_python_tag(const std::vector<std::string>& lines) {
 }
 
 /**
- * @brief how indented is a current block of code 
- * 
- * @param lines 
- * @return int 
+ * @brief how indented is a current block of code
+ *
+ * @param lines
+ * @return int
  */
-int Parser::get_min_indentation(const std::vector<std::string>& lines) {
+int Parser::get_min_indentation(const std::vector<std::string> &lines)
+{
     size_t min_indents = 99999;
-    for (const std::string& line : lines) {
-        if (!line.find_first_not_of(" \t\n\r\f\v") == std::string::npos) {
+    for (const std::string &line : lines)
+    {
+        if (!line.find_first_not_of(" \t\n\r\f\v") == std::string::npos)
+        {
             continue;
         }
-        else {
+        else
+        {
             size_t leading_spaces = line.find_first_not_of(" \t");
-            if (leading_spaces != std::string::npos) {
+            if (leading_spaces != std::string::npos)
+            {
                 min_indents = std::min(min_indents, leading_spaces);
             }
         }
@@ -81,15 +93,17 @@ int Parser::get_min_indentation(const std::vector<std::string>& lines) {
 /**
  * @brief removes the first whitespace characters in each vector element
  *        this is done so the python interpreter can read the code without the leading spaces
- * 
- * @param whitespace 
- * @param lines 
- * @return std::vector<std::string> 
+ *
+ * @param whitespace
+ * @param lines
+ * @return std::vector<std::string>
  */
-std::vector<std::string> Parser::remove_white_space(int whitespace, const std::vector<std::string>& lines) {
+std::vector<std::string> Parser::remove_white_space(int whitespace, const std::vector<std::string> &lines)
+{
     std::vector<std::string> python_code;
-    python_code.reserve(lines.size());  
-    for (const std::string& line : lines) {
+    python_code.reserve(lines.size());
+    for (const std::string &line : lines)
+    {
         python_code.push_back(line.substr(whitespace));
     }
     return python_code;
@@ -97,19 +111,23 @@ std::vector<std::string> Parser::remove_white_space(int whitespace, const std::v
 
 /**
  * @brief find the python code and adds it to a vector
- * 
- * @param lines 
- * @return std::vector<std::string> 
+ *
+ * @param lines
+ * @return std::vector<std::string>
  */
-std::vector<std::string> Parser::parse_python_code(const std::vector<std::string>& lines) {
+std::vector<std::string> Parser::parse_python_code(const std::vector<std::string> &lines)
+{
     std::vector<std::string> python_code;
     int line_number = 0;
 
-    while (line_number < lines.size()) {
-        if (lines[line_number].find("<python>") != std::string::npos) {
+    while (line_number < lines.size())
+    {
+        if (lines[line_number].find("<python>") != std::string::npos)
+        {
             line_number++;
-            while (line_number < lines.size() && 
-            lines[line_number].find("</python>") == std::string::npos) {
+            while (line_number < lines.size() &&
+                   lines[line_number].find("</python>") == std::string::npos)
+            {
                 if (lines[line_number].find_first_not_of(" \t\n\r\f\v") != std::string::npos)
                     python_code.push_back(lines[line_number]);
                 line_number++;
