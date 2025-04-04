@@ -28,8 +28,8 @@ theme:
 nav:
   - Home: index.md
   - Installation: installation.md
-  - Usage: usage.md
-  - Examples: examples.md
-  - About: about.md
+  # - Usage: usage.md
+  # - Examples: examples.md
+  # - About: about.md
   - License: license.md
   - GitHub: https://github.com/rajpandya737/PYTHML
